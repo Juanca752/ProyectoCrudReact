@@ -1,0 +1,41 @@
+
+
+services:
+  api:
+    build:
+      context: ./api  
+      dockerfile: Dockerfile
+    container_name: nestjs-users-api
+    mem_limit: 2g
+    ports:
+      - "3000:3000"
+    #volumes:
+     # - ./api:/app
+     # - /app/node_modules  # Evita sobrescribir node_modules con los archivos locales
+    environment:
+      - NODE_ENV=local
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=root
+      - DB_PASSWORD=rootpass
+      - DB_DATABASE=mydb
+      - JWT_KEY=your_jwt_secret_key
+    depends_on:
+      - mysql
+    tty: true
+    stdin_open: true
+    command: npm run start:dev
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db-nest-users-api
+    mem_limit: 2g
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: mydb
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-users:/var/lib/mysql
+
+volumes:
+  mysql-users:
