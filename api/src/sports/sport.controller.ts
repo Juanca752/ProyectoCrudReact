@@ -5,6 +5,7 @@ import { Controller, Get, Post, Body, Param, Put, Delete,UseGuards,UseIntercepto
 import { SportService } from './sport.service';
 import { Sport } from './sport.entity';
 import { AuthGuard } from '@nestjs/passport';
+
 @Controller('sports')
 @UseGuards(AuthGuard('jwt'))
 @UseInterceptors(ClassSerializerInterceptor)
