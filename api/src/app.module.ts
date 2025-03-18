@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { AuthModule } from './auth/auth.module';
+
 import { UsersModule } from './users/user.module';
 import { User } from './users/user.entity';
 
@@ -10,7 +12,11 @@ import { TrainerModule } from './trainers/trainer.module';
 import { Sport } from './sports/sport.entity';
 import { SportModule } from './sports/sport.module';
 
-import { AuthModule } from './auth/auth.module';
+import { UserProfileModule } from './user-profile/user-profile.module';
+import { UserProfile } from './user-profile/user-profile.entity';
+
+import { SportLevel } from './sport-levels/sport-level.entity';
+import { SportLevelModule } from './sport-levels/sport-level.module';
 
 @Module({
   imports: 
@@ -22,13 +28,15 @@ import { AuthModule } from './auth/auth.module';
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_DATABASE,
-        entities: [User, Trainer, Sport],
+        entities: [User, Trainer, Sport, SportLevel, UserProfile],
         synchronize: false,
     }),
     UsersModule,
     AuthModule,
     TrainerModule,
-    SportModule
+    SportModule,
+    SportLevelModule,
+    UserProfileModule
   ],
   controllers: [],
   providers: [],
