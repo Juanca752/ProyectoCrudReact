@@ -1,7 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { UsersModule } from './users/user.module';
 import { User } from './users/user.entity';
+
+import { Trainer } from './trainers/trainer.entity';
+import { TrainerModule } from './trainers/trainer.module';
+
+import { Sport } from './sports/sport.entity';
+import { SportModule } from './sports/sport.module';
+
 import { AuthModule } from './auth/auth.module';
 
 @Module({
@@ -14,11 +22,13 @@ import { AuthModule } from './auth/auth.module';
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_DATABASE,
-        entities: [User],
+        entities: [User, Trainer, Sport],
         synchronize: false,
     }),
     UsersModule,
-    AuthModule
+    AuthModule,
+    TrainerModule,
+    SportModule
   ],
   controllers: [],
   providers: [],
