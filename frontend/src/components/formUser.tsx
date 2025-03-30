@@ -8,7 +8,11 @@ import {
 } from "../store/userSlice";
 import { useState, useEffect } from "react";
 
-export default function FormUser() {
+type FormUserProps = {
+  onClose: () => void;
+};
+
+export default function FormUser({ onClose }: FormUserProps) {
   const selectedUser = useSelector(
     (state: RootState) => state.users.selectedUser
   );
@@ -43,6 +47,7 @@ export default function FormUser() {
     setType(false);
     setPassword("");
     dispatch(clearSelectedUser());
+    onClose(); // Cerrar el modal después de crear/editar
   };
 
   const handleCancel = () => {
@@ -51,6 +56,7 @@ export default function FormUser() {
     setType(false);
     setPassword("");
     dispatch(clearSelectedUser());
+    onClose(); // Cerrar el modal al cancelar
   };
 
   return (
@@ -109,15 +115,13 @@ export default function FormUser() {
       </div>
 
       <div className="mt-4 flex justify-between">
-        {selectedUser && (
-          <button
-            type="button"
-            onClick={handleCancel}
-            className="text-sm font-semibold text-gray-900"
-          >
-            Cancelar
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={handleCancel}
+          className="text-sm font-semibold text-gray-900"
+        >
+          Cancelar
+        </button>
         <button
           type="submit"
           className="bg-indigo-600 text-white px-4 py-2 rounded"

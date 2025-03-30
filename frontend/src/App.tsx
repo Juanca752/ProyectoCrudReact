@@ -1,17 +1,48 @@
 import "./App.css";
 import FormLogin from "./components/formLogin";
 import ListUsers from "./components/listUsers";
-
+import HomePage from "./pages/Homepage";
+import PageUserProfile from "./pages/UserProfile";
+import {
+  Navigate,
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import Root from "./components/Root";
 import { useAuth } from "./components/auth";
+import TrainersPage from "./pages/Trainers";
 function App() {
   const { token } = useAuth();
-  return (
-    <div className="absolute top-0 z-[-2]  h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]">
-      <div className="flex items-center justify-center h-screen ">
-        {token ? <ListUsers /> : <FormLogin />}
-      </div>
-    </div>
-  );
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Root />,
+      children: [
+        {
+          index: true,
+          element: token ? <Navigate to="/homepage" replace /> : <FormLogin />,
+        },
+        {
+          path: "homepage",
+          element: token ? <HomePage /> : <Navigate to="/" replace />,
+        },
+        {
+          path: "users",
+          element: token ? <ListUsers /> : <Navigate to="/" replace />,
+        },
+        {
+          path: "profile",
+          element: token ? <PageUserProfile /> : <Navigate to="/" replace />,
+        },
+        {
+          path: "trainers",
+          element: token ? <TrainersPage /> : <Navigate to="/" replace />,
+        },
+      ],
+    },
+  ]);
+  return <RouterProvider router={router} />;
 }
 
 export default App;

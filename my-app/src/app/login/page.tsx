@@ -1,12 +1,13 @@
+"use client";
 import { useState } from "react";
-import { useAuth } from "./auth";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "#/utils/auth";
+import { useRouter } from "next/navigation";
 
 export default function FormLogin() {
   const { setToken } = useAuth();
   const [email, setEmail] = useState("");
   const [pass, setPassword] = useState("");
-  const navigate = useNavigate();
+  const router = useRouter();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -26,7 +27,7 @@ export default function FormLogin() {
       const data = await response.json();
       if (data.token) {
         setToken(data.token);
-        navigate("homepage");
+        router.push("/dashboard");
       }
     } catch (error) {
       console.error("Error:", error);

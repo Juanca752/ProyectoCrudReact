@@ -1,6 +1,6 @@
 import { AiFillDelete } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "../store/store";
 import {
@@ -8,6 +8,7 @@ import {
   deleteUser,
   getUserById,
   setSelectedUser,
+  clearSelectedUser,
 } from "../store/userSlice";
 import FormUser from "./formUser";
 
@@ -16,6 +17,7 @@ export default function ListUsers() {
   const { users, loading, error, selectedUser } = useSelector(
     (state: RootState) => state.users
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -27,6 +29,12 @@ export default function ListUsers() {
 
   function handleEdit(id: number) {
     dispatch(getUserById(id));
+    setIsModalOpen(true);
+  }
+
+  function handleCreate() {
+    dispatch(clearSelectedUser());
+    setIsModalOpen(true);
   }
 
   if (loading) return <p>Cargando usuarios...</p>;
@@ -70,7 +78,20 @@ export default function ListUsers() {
         </tbody>
       </table>
 
-      {selectedUser !== undefined && <FormUser />}
+      <button
+        onClick={handleCreate}
+        className="mt-4 p-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+      >
+        Crear Usuario
+      </button>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <FormUser onClose={() => setIsModalOpen(false)} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

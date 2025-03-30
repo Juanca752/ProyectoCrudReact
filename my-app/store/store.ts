@@ -1,14 +1,13 @@
+"use client";
 import { configureStore } from "@reduxjs/toolkit";
+
 import authReducer from "./authSlice";
-import userReducer from "./userSlice";
-import trainerReducer from "./trainerSlice";
-import userProfileReducer from "./userProfileSlice";
+import userReducer from "./userslice";
+
 const store = configureStore({
   reducer: {
     auth: authReducer,
     users: userReducer,
-    trainers: trainerReducer,
-    userProfile: userProfileReducer,
   },
 });
 
